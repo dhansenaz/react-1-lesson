@@ -4,43 +4,74 @@ import './App.css';
 
 class App extends Component {
 
-  constructor(){
+  constructor() {
     super()
 
 
     this.state = {
       pictureUrl: '',
       name: '',
-      friends: []
+      friends: [{
+        pictureUrl: "",
+        name: ""
+
+      }]
 
 
     };
   }
-updatePicture(value){
-  this.setState(() =>{
-    return{
-      pictureUrl:value
-    }
-  })
+  updatePicture(value) {
+    this.setState(() => {
+      return {
+        pictureUrl: value
+      }
+    })
 
-}
-updateName(value){
-  this.setState(() =>{
-    return{
-      name:value
-    }
-  })
-}
+  }
+  updateName(value) {
+    this.setState(() => {
+      return {
+        name: value
+      }
+    })
+  }
+  addFriend() {
+    console.log(this.state)
+    const newFriend = {
+      pictureUrl: this.state.pictureUrl,
+      name: this.state.name
+    };
+    const newFriendsList = this.state.friends.slice();
+    newFriendsList.push(newFriend);
+    this.setState(() => {
+      return {
+        friends: newFriendsList,
+        pictureUrl: '',
+        name: ''
+      }
+    })
+  }
   render() {
     return (
       <div>
         Picture:
-       <input onChange={event => this.updatePicture(event.target.value)}/>
+       <input onChange={event => this.updatePicture(event.target.value)}
+       value={this.state.pictureUrl} />
 
         Name:
-       <input onChange={event => this.updateName(event.target.value)}/>
+       <input onChange={event => this.updateName(event.target.value)} />
 
-        <button>Add friends</button>
+        <button onClick={event => this.addFriend()}>Add friends</button>
+        <div>
+          {
+            this.state.friends.map(friend =>
+              <div key={friend.name}>
+                <img src={friend.pictureUrl} alt=""/>
+                Name:{friend.name}
+              </div>
+            )}
+        </div>
+
 
         <div>Current state: {JSON.stringify(this.state)}</div>
       </div>
